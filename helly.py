@@ -33,27 +33,34 @@ def draw_pixelated_heart():
     ani.save("heart.gif", writer="pillow")
     st.image("heart.gif")
 
-# Function to create flying pixelated balloons animation
+# Function to create flying pixelated balloons with strings
 def draw_flying_balloons():
-    num_balloons = 10
+    num_balloons = 8  # Reduced for better spacing
     frames = 100
 
-    x_positions = np.random.uniform(-10, 10, num_balloons)
-    y_positions = np.random.uniform(-15, -5, num_balloons)
+    x_positions = np.random.uniform(-8, 8, num_balloons)
+    y_positions = np.random.uniform(-12, -6, num_balloons)
 
     fig, ax = plt.subplots(figsize=(6, 8))
-    ax.set_xlim(-12, 12)
+    ax.set_xlim(-10, 10)
     ax.set_ylim(-15, 15)
     ax.set_xticks([])
     ax.set_yticks([])
     ax.set_title("🎈 Happy Birthday 🎉", fontsize=14, color='red')
 
-    scatter = ax.scatter(x_positions, y_positions, color='red', s=200, marker='o')
+    scatter = ax.scatter(x_positions, y_positions, color='red', s=500, marker='o')  # Larger balloons
+
+    # Create string lines
+    lines = [ax.plot([], [], 'k-', lw=1.5)[0] for _ in range(num_balloons)]
 
     def animate(i):
         new_y_positions = y_positions + (i * 0.1)
         scatter.set_offsets(np.c_[x_positions, new_y_positions])
-        return scatter,
+
+        for j, line in enumerate(lines):
+            line.set_data([x_positions[j], x_positions[j]], [new_y_positions[j] - 3, new_y_positions[j]])
+
+        return scatter, *lines
 
     ani = animation.FuncAnimation(fig, animate, frames=frames, interval=50, blit=True)
 
