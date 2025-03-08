@@ -1,5 +1,5 @@
 import os
-os.system("pip install matplotlib pillow numpy")
+os.system("pip install matplotlib pillow numpy streamlit")
 
 import matplotlib.pyplot as plt
 import streamlit as st
@@ -20,7 +20,7 @@ def draw_pixelated_heart():
     ax.set_ylim(-15, 15)
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.set_title("❤ Happy Birthday ❤", fontsize=14, color='red')
+    ax.set_title("❤ A Heart for You ❤", fontsize=14, color='red')
 
     scatter = ax.scatter([], [], color='red', s=100, marker='s')
 
@@ -33,48 +33,43 @@ def draw_pixelated_heart():
     ani.save("heart.gif", writer="pillow")
     st.image("heart.gif")
 
-# Function to create flying pixelated balloons with strings
-def draw_flying_balloons():
-    num_balloons = 8  # Reduced for better spacing
-    frames = 100
+# Function to create blooming rose animation
+def draw_blooming_rose():
+    t = np.linspace(0, 2 * np.pi, 200)
+    
+    # Rose parametric equations
+    r = 8 * np.sin(4 * t)  # Petal shape
+    x = r * np.cos(t)
+    y = r * np.sin(t)
 
-    x_positions = np.random.uniform(-8, 8, num_balloons)
-    y_positions = np.random.uniform(-12, -6, num_balloons)
+    x_pixelated = np.round(x)
+    y_pixelated = np.round(y)
 
-    fig, ax = plt.subplots(figsize=(6, 8))
+    fig, ax = plt.subplots(figsize=(6, 6))
     ax.set_xlim(-10, 10)
-    ax.set_ylim(-15, 15)
+    ax.set_ylim(-10, 10)
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.set_title("🎈 Happy Birthday 🎉", fontsize=14, color='red')
+    ax.set_title("🌹 Blooming Rose 🌹", fontsize=14, color='red')
 
-    scatter = ax.scatter(x_positions, y_positions, color='red', s=500, marker='o')  # Larger balloons
-
-    # Create string lines
-    lines = [ax.plot([], [], 'k-', lw=1.5)[0] for _ in range(num_balloons)]
+    scatter = ax.scatter([], [], color='red', s=100, marker='s')
 
     def animate(i):
-        new_y_positions = y_positions + (i * 0.1)
-        scatter.set_offsets(np.c_[x_positions, new_y_positions])
+        scatter.set_offsets(np.c_[x_pixelated[:i], y_pixelated[:i]])
+        return scatter,
 
-        for j, line in enumerate(lines):
-            line.set_data([x_positions[j], x_positions[j]], [new_y_positions[j] - 3, new_y_positions[j]])
+    ani = animation.FuncAnimation(fig, animate, frames=len(t), interval=20, blit=True)
 
-        return scatter, *lines
+    ani.save("rose.gif", writer="pillow")
+    st.image("rose.gif")
 
-    ani = animation.FuncAnimation(fig, animate, frames=frames, interval=50, blit=True)
+# Streamlit UI
+st.title("🎉 Choose Your Surprise 🎉")
 
-    ani.save("balloons.gif", writer="pillow")
-    st.image("balloons.gif")
-
-# Streamlit App UI
-st.title("🎉 Welcome to the Birthday Surprise! 🎉")
-
-# Ask user what they want
-choice = st.radio("What do you want?", ("Balloons", "Heart"))
+choice = st.radio("What would you like?", ("Heart", "Rose"))
 
 if st.button("Show Animation"):
-    if choice == "Balloons":
-        draw_flying_balloons()
-    elif choice == "Heart":
+    if choice == "Heart":
         draw_pixelated_heart()
+    elif choice == "Rose":
+        draw_blooming_rose()
