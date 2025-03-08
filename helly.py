@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 import streamlit as st
 import numpy as np
-import matplotlib.pyplot as plt
+
 import matplotlib.animation as animation
 
 # Function to create pixelated heart animation
