@@ -1,12 +1,11 @@
 #pip install streamlit
 
 import os
-os.system("pip install matplotlib")
-import matplotlib.pyplot as plt
+os.system("pip install matplotlib pillow")
 
+import matplotlib.pyplot as plt
 import streamlit as st
 import numpy as np
-
 import matplotlib.animation as animation
 
 # Function to create pixelated heart animation
@@ -35,9 +34,13 @@ def draw_pixelated_heart():
         scatter.set_offsets(np.c_[x_pixelated[:i], y_pixelated[:i]])
         return scatter,
 
-    ani = animation.FuncAnimation(fig, animate, frames=len(t), interval=10, blit=True)
+    ani = animation.FuncAnimation(fig, animate, frames=len(t), interval=50, blit=True)
 
-    st.pyplot(fig)  # Display in Streamlit
+    # Save animation as GIF
+    ani.save("heart.gif", writer="pillow")
+
+    # Display GIF in Streamlit
+    st.image("heart.gif")
 
 # Streamlit App UI
 st.title("Authentication Required!")
@@ -53,4 +56,4 @@ with col1:
 
 with col2:
     if st.button("10"):
-        st.error("Aww trynna be a coder? i loved that you tried")
+        st.error("Aww trynna be a coder? I love that you tried!")
