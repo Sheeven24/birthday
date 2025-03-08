@@ -20,7 +20,10 @@ def draw_pixelated_heart():
     ax.set_ylim(-15, 15)
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.set_title("❤ A Heart for You ❤", fontsize=14, color='red')
+
+    # Add Happy Birthday background text
+    ax.text(0, 0, "HAPPY BIRTHDAY", fontsize=30, color='pink',
+            ha='center', va='center', alpha=0.3, fontweight='bold')
 
     scatter = ax.scatter([], [], color='red', s=100, marker='s')
 
@@ -29,7 +32,7 @@ def draw_pixelated_heart():
         return scatter,
 
     ani = animation.FuncAnimation(fig, animate, frames=len(t), interval=10, blit=True)
-    
+
     ani.save("heart.gif", writer="pillow")
     st.image("heart.gif")
 
@@ -50,7 +53,10 @@ def draw_blooming_rose():
     ax.set_ylim(-10, 10)
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.set_title("🌹 Blooming Rose 🌹", fontsize=14, color='red')
+
+    # Add Happy Birthday background text
+    ax.text(0, 0, "HAPPY BIRTHDAY BABY", fontsize=30, color='pink',
+            ha='center', va='center', alpha=0.3, fontweight='bold')
 
     scatter = ax.scatter([], [], color='red', s=100, marker='s')
 
